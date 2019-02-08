@@ -1,6 +1,7 @@
 body,
 html {
   background: #2f363f;
+  margin: auto;
 }
 #fN,
 #lN {
@@ -21,4 +22,17 @@ html {
   min-width: 45.8%;
   margin-top: 220px;
   margin-right: 1%;
+}
+
+.jumbotron {
+  background: #777e8b;
+  margin-top: 20%;
+}
+
+#noMatch {
+  color: red;
+}
+
+#match {
+  color: green;
 }
