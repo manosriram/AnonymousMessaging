@@ -12,9 +12,27 @@ class Home extends Component {
       alreadyLogged: 0,
       payload: {},
       profile: 0,
-      home: 1
+      home: 1,
+      foundUser: {}
     };
     this.getProfile = this.getProfile.bind(this);
+    this.logOut = this.logOut.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
+  }
+
+  searchUsers() {
+    const username = this.refs.user.value;
+    axios
+      .post(`/profile/userProfile/${username}`)
+      .then(res =>
+        this.setState(
+          { foundUser: res.data.payload },
+          () =>
+            // console.log(this.state)
+            (window.location = "/userProfile")
+        )
+      )
+      .catch(err => console.log(err));
   }
 
   getProfile() {
@@ -34,6 +52,10 @@ class Home extends Component {
         )
       )
       .catch();
+  }
+  logOut() {
+    axios.get("/auth/userLogout");
+    window.location = "/";
   }
 
   render() {
@@ -59,6 +81,21 @@ class Home extends Component {
                 aria-label="Toggle navigation"
               >
                 <span className="navbar-toggler-icon" />
+              </button>
+              <form class="form-inline my-2 my-lg-0" id="search">
+                <input
+                  class="form-control mr-sm-2"
+                  type="search"
+                  placeholder="Search Users.."
+                  aria-label="Search"
+                  ref="user"
+                />
+              </form>
+              <button
+                class="ui inverted primary button"
+                onClick={this.searchUsers}
+              >
+                Search
               </button>
               <button
                 onClick={this.logOut}

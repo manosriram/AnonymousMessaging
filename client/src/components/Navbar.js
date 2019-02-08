@@ -10,8 +10,7 @@ class Navbar extends Component {
       payload: {}
     };
 
-    this.logOut = this.logOut.bind(this);
-    this.getProfile = this.getProfile.bind(this);
+    // this.getProfile = this.getProfile.bind(this);
   }
 
   componentDidMount() {
@@ -24,10 +23,6 @@ class Navbar extends Component {
         })
       )
       .catch();
-  }
-  logOut() {
-    axios.get("/auth/userLogout");
-    window.location = "/";
   }
 
   render() {
