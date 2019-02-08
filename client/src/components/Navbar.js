@@ -1,13 +1,45 @@
+import Profile from "./Profile";
 import React, { Component } from "react";
+const axios = require("axios");
 
 class Navbar extends Component {
+  constructor() {
+    super();
+    this.state = {
+      alreadyLogged: 0,
+      payload: {}
+    };
+
+    this.logOut = this.logOut.bind(this);
+    this.getProfile = this.getProfile.bind(this);
+  }
+
+  componentDidMount() {
+    axios
+      .post("/auth/userLogin")
+      .then(res =>
+        this.setState({
+          alreadyLogged: res.data.alreadyLogged,
+          payload: res.data.payload
+        })
+      )
+      .catch();
+  }
+  logOut() {
+    axios.get("/auth/userLogout");
+    window.location = "/";
+  }
+
   render() {
     return (
       <div>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a className="navbar-brand" href="/">
-            Home
+          <a href="/">
+            <button class="ui inverted teal button"> Home </button>
           </a>
+          <button onClick={this.getProfile} class="ui inverted teal button">
+            Profile
+          </button>
           <button
             className="navbar-toggler"
             type="button"
@@ -18,6 +50,13 @@ class Navbar extends Component {
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon" />
+          </button>
+          <button
+            onClick={this.logOut}
+            id="logout"
+            class="ui inverted red button"
+          >
+            Logout
           </button>
         </nav>
       </div>

@@ -25,7 +25,12 @@ const PersonSchema = new Schema({
   location: {
     type: String,
     required: false
-  }
+  },
+  messages: [
+    {
+      type: String
+    }
+  ]
 });
 
 module.exports = Person = mongoose.model("myPerson", PersonSchema);

@@ -7,6 +7,7 @@ const db = require("./setup/url").mongoURL;
 const key = require("./setup/url").secret;
 const cookieparser = require("cookie-parser");
 const session = require("express-session");
+const profile = require("./routes/profile");
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
@@ -22,6 +23,7 @@ app.use(
     }
   })
 );
+
 app.use(cookieparser());
 app.use("/myuploads", express.static("./public/myuploads/"));
 
@@ -44,6 +46,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use("/auth", auth);
+app.use("/profile", profile);
 app.listen(port, () => {
   console.log(`Server at ${port}`);
 });

@@ -36,3 +36,7 @@ html {
 #match {
   color: green;
 }
+
+#logout {
+  margin-left: auto;
+}

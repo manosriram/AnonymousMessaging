@@ -3,7 +3,7 @@ const router = express.Router();
 const Person = require("../Models/Person");
 const bcrypt = require("bcryptjs");
 const jsonwt = require("jsonwebtoken");
-const key = require("../setup/url");
+const key = require("../setup/url").secret;
 
 router.get("/", (req, res) => {
   res.send("Auth Page!!");
@@ -70,16 +70,16 @@ router.post("/userLogin", (req, res) => {
               };
               jsonwt.sign(
                 payload,
-                key.secret,
+                key,
                 { expiresIn: 9000000 },
                 (err, token) => {
                   res.cookie("auth_t", token, { maxAge: 90000000 });
-                  res.cookie("email", person.email, { maxAge: 90000000 });
                   return res.json({
                     alreadyLogged: 0,
                     loggedIn: 1,
                     passwordIncorrect: 0,
-                    notFound: 0
+                    notFound: 0,
+                    payload: person
                   });
                 }
               );
@@ -88,7 +88,8 @@ router.post("/userLogin", (req, res) => {
                 alreadyLogged: 0,
                 loggedIn: 0,
                 passwordIncorrect: 1,
-                notFound: 0
+                notFound: 0,
+                payload: person
               });
             }
           })
@@ -96,18 +97,32 @@ router.post("/userLogin", (req, res) => {
       })
       .catch(err => console.log(err));
   } else {
-    Person.findOne({ email: req.cookies.email })
-      .then(person => {
+    // });
+    jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+      if (user) {
         return res.json({
+          payload: user,
           alreadyLogged: 1,
           loggedIn: 0,
           passwordIncorrect: 0,
-          notFound: 0,
-          payload: person
+          notFound: 0
         });
-      })
-      .catch(err => console.log(err));
+      }
+    });
   }
+});
+
+router.get("/userLogout", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    if (user) {
+      res.clearCookie("auth_t");
+      res.clearCookie("email");
+      req.logout();
+      return;
+    } else {
+      return res.json({ error: 1 });
+    }
+  });
 });
 
 module.exports = router;
