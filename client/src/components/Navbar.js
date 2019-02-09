@@ -32,9 +32,6 @@ class Navbar extends Component {
           <a href="/">
             <button class="ui inverted teal button"> Home </button>
           </a>
-          <button onClick={this.getProfile} class="ui inverted teal button">
-            Profile
-          </button>
           <button
             className="navbar-toggler"
             type="button"

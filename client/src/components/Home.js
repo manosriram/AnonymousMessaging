@@ -3,7 +3,9 @@ import Profile from "./Profile";
 import { Redirect } from "react-router-dom";
 import "./Basic.css";
 import React, { Component } from "react";
+import UserProfile from "./userProfile";
 const axios = require("axios");
+var curUs = "";
 
 class Home extends Component {
   constructor() {
@@ -13,11 +15,14 @@ class Home extends Component {
       payload: {},
       profile: 0,
       home: 1,
-      foundUser: {}
+      foundUser: {},
+      search: 0,
+      users: []
     };
     this.getProfile = this.getProfile.bind(this);
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
 
   searchUsers() {
@@ -25,14 +30,18 @@ class Home extends Component {
     axios
       .post(`/profile/userProfile/${username}`)
       .then(res =>
-        this.setState(
-          { foundUser: res.data.payload },
-          () =>
-            // console.log(this.state)
-            (window.location = "/userProfile")
-        )
+        this.setState({
+          foundUser: res.data.payload,
+          search: 1,
+          profile: 0,
+          home: 0
+        })
       )
       .catch(err => console.log(err));
+  }
+
+  getUser() {
+    console.log(curUs);
   }
 
   getProfile() {
@@ -40,6 +49,10 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    axios
+      .post("/profile/getAllUsers")
+      .then(res => this.setState({ users: res.data.users }))
+      .catch(err => console.log(err));
     axios
       .post("/auth/userLogin")
       .then(res =>
@@ -53,6 +66,7 @@ class Home extends Component {
       )
       .catch();
   }
+
   logOut() {
     axios.get("/auth/userLogout");
     window.location = "/";
@@ -86,7 +100,7 @@ class Home extends Component {
                 <input
                   class="form-control mr-sm-2"
                   type="search"
-                  placeholder="Search Users.."
+                  placeholder="Message Users.."
                   aria-label="Search"
                   ref="user"
                 />
@@ -108,13 +122,38 @@ class Home extends Component {
           </div>
           <div className="jumbotron jumbotron-fluid">
             {this.state.loggedIn}
-            <h1>Welcome {this.state.payload.name}</h1>
+            <h1>Welcome {this.state.payload.name} !</h1>
+            <br />
+            <div id="box1" class="ui raised very padded text container segment">
+              <h2>Available Users : </h2>
+              <hr />
+              <br />
+              <br />
+              {this.state.users.map((person, ind) => {
+                curUs = this.state.users[ind];
+                return (
+                  <div key={ind}>
+                    <a onClick={this.getUser}>
+                      <h2 key={ind}>{person.name}</h2>
+                    </a>
+                    <br />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       );
     }
     if (this.state.profile === 1 && this.state.home === 0) {
       return <Profile data={this.state.payload} />;
+    }
+    if (
+      this.state.search === 1 &&
+      this.state.profile === 0 &&
+      this.state.home === 0
+    ) {
+      return <UserProfile data={this.state.foundUser} />;
     }
   }
 }

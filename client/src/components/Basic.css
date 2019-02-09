@@ -42,9 +42,7 @@ html {
 }
 
 #box {
+  width: auto;
+  margin: auto;
   margin-top: 20%;
 }
-
-/* #search {
-  margin-left: 50%;
-} */

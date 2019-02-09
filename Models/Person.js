@@ -30,6 +30,11 @@ const PersonSchema = new Schema({
     {
       type: String
     }
+  ],
+  sentMessages: [
+    {
+      type: String
+    }
   ]
 });
 
