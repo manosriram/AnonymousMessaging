@@ -12,6 +12,16 @@ router.post("/", (req, res) => {
   res.send("Profile Home Post..");
 });
 
+router.post("/getMessages", (req, res) => {
+  const email = req.body.data.email;
+  Person.findOne({ email: email })
+    .then(person => {
+      // console.log(person.messages);
+      return res.json({ messages: person.messages });
+    })
+    .catch(err => console.log(err));
+});
+
 router.post("/getAllUsers", (req, res) => {
   Person.find()
     .then(people => {

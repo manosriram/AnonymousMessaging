@@ -1,6 +1,6 @@
 body,
 html {
-  background: #2f363f;
+  background: #2c3e50;
   margin: auto;
 }
 #fN,
@@ -10,23 +10,16 @@ html {
 
 #registerForm {
   float: left;
-  display: inline-block;
-  min-width: 48.8%;
-  margin-top: 150px;
-  margin-right: 1.4%;
+  min-width: 50.8%;
 }
 
 #loginForm {
-  float: right;
-  display: inline-block;
-  min-width: 45.8%;
-  margin-top: 220px;
-  margin-right: 1%;
+  overflow: hidden;
+  max-width: 40.8%;
 }
 
 .jumbotron {
-  background: #777e8b;
-  margin-top: 20%;
+  background: #758aa2;
 }
 
 #noMatch {
@@ -42,7 +35,60 @@ html {
 }
 
 #box {
+  text-align: left;
   width: auto;
   margin: auto;
-  margin-top: 20%;
+}
+
+#msg {
+  border-radius: 5px;
+}
+#msg::placeholder {
+  font-size: 30px;
+  text-align: center;
+}
+
+#msgB {
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+}
+
+#msgBox,
+#Ymsg {
+  color: whitesmoke;
+}
+
+#msgBox {
+  text-align: left;
+}
+#one {
+  border: 6px solid #95a5a6;
+}
+
+#homeIcon {
+  color: #dae0e2;
+  font-size: 30px;
+}
+
+#navItems {
+  /* margin: auto; */
+  text-align: left;
+}
+
+#search {
+  /* margin-left: 40px; */
+  text-align: left;
+  /* width: 10px; */
+}
+
+#usIP {
+  width: 60%;
+}
+#homeIn {
+  text-align: center;
+}
+
+#spinner_1 {
+  margin: auto;
 }

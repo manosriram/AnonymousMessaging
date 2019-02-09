@@ -33,17 +33,6 @@ class Navbar extends Component {
             <button class="ui inverted teal button"> Home </button>
           </a>
           <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <button
             onClick={this.logOut}
             id="logout"
             class="ui inverted red button"

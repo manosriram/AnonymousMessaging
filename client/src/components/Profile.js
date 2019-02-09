@@ -11,30 +11,27 @@ class Profile extends Component {
       <div>
         <div>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a href="/">
-              <button class="ui inverted teal button"> Home </button>
+            <a id="homeIcon" href="/">
+              <i class="home icon" id="homeIcan" />
             </a>
-            <button onClick={this.getProfile} class="ui inverted teal button">
-              Profile
-            </button>
             <button
-              className="navbar-toggler"
+              class="navbar-toggler"
               type="button"
               data-toggle="collapse"
-              data-target="#navbarNavDropdown"
-              aria-controls="navbarNavDropdown"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon" />
+              <span class="navbar-toggler-icon" />
             </button>
-            <button
-              onClick={this.logOut}
-              id="logout"
-              class="ui inverted red button"
-            >
-              Logout
-            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <br />
+              <button onClick={this.logOut} class="ui inverted red button">
+                Logout
+              </button>
+            </div>
           </nav>
         </div>
         <div id="box" class="ui raised very padded text container segment">

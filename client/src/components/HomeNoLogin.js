@@ -1,3 +1,4 @@
+import Spinner from "react-spinner-material";
 import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import "./Basic.css";
@@ -94,7 +95,7 @@ class HomeNoLogin extends Component {
             {
               registered: resp.data.registered,
               alreadyRegistered: resp.data.alreadyRegistered,
-              loading: resp.data.loading
+              loading: 0
             },
             () => {
               if (this.state.alreadyRegistered === 1) {
@@ -184,18 +185,13 @@ class HomeNoLogin extends Component {
             </button>
           )}
           {this.state.loading === 1 && (
-            <button class="btn btn-primary" type="button" disabled>
-              <span
-                class="spinner-grow spinner-grow-sm"
-                role="status"
-                aria-hidden="true"
-              />
-              Loading...
-            </button>
+            <Spinner
+              size={80}
+              spinnerColor={"white"}
+              spinnerWidth={1}
+              visible={this.state.loading}
+            />
           )}
-
-          <br />
-          <br />
         </div>
         <div id="loginForm">
           {this.state.passwordIncorrect === 1 && (
