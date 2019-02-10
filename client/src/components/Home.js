@@ -105,7 +105,7 @@ class Home extends Component {
 
   logOut() {
     axios.get("/auth/userLogout");
-    window.location = "/";
+    this.props.history.push("/");
   }
 
   render() {

@@ -136,9 +136,7 @@ router.get("/userLogout", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
     if (user) {
       res.clearCookie("auth_t");
-      res.clearCookie("email");
-      req.logOut();
-      return;
+      req.logout();
     } else {
       return res.json({ error: 1 });
     }
