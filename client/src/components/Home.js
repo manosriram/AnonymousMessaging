@@ -4,6 +4,7 @@ import "./Basic.css";
 import React, { Component } from "react";
 import UserProfile from "./userProfile";
 const axios = require("axios");
+const Cookie = require("js-cookie");
 
 class Home extends Component {
   constructor() {
@@ -104,7 +105,7 @@ class Home extends Component {
   }
 
   logOut() {
-    axios.get("/auth/userLogout");
+    Cookie.remove("auth_t");
     this.props.history.push("/");
   }
 
