@@ -2,7 +2,6 @@ import Spinner from "react-spinner-material";
 import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import "./Basic.css";
-import Navbar from "./Navbar";
 const axios = require("axios");
 
 class HomeNoLogin extends Component {
@@ -38,7 +37,6 @@ class HomeNoLogin extends Component {
   }
 
   handleLogin() {
-    // this.setState({ notVerfied: 0, registered: 0, alreadyRegistered: 0 });
     const email = this.refs.loginEmail.value;
     const password = this.refs.loginPass.value;
 
@@ -49,7 +47,6 @@ class HomeNoLogin extends Component {
     axios
       .post("/auth/userLogin", { payload })
       .then(resp => {
-        // console.log(resp.data);
         this.setState({
           loggedIn: resp.data.loggedIn,
           aleradyLogged: resp.data.aleradyLogged,
@@ -61,8 +58,6 @@ class HomeNoLogin extends Component {
   }
 
   handleClick() {
-    // if (this.refs.name.value === "")
-    // if (this.refs.name.value === ' ')
     if (
       this.refs.name.value.length === 0 ||
       this.refs.email.value.length === 0 ||
@@ -95,7 +90,8 @@ class HomeNoLogin extends Component {
             {
               registered: resp.data.registered,
               alreadyRegistered: resp.data.alreadyRegistered,
-              loading: 0
+              loading: 0,
+              error: resp.data.error
             },
             () => {
               if (this.state.alreadyRegistered === 1) {
@@ -112,8 +108,11 @@ class HomeNoLogin extends Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <div className="jumbotron">
+          <h2>Register or Login..</h2>
+        </div>
         <div id="registerForm">
+          {this.state.error === 2 && <h2 id="noMatch">User Name Taken..</h2>}
           {this.state.registered === 1 && (
             <h2 id="match">Successfully Registered..</h2>
           )}
@@ -152,7 +151,7 @@ class HomeNoLogin extends Component {
                 type="password"
                 name="password"
                 placeholder="Password"
-                id="lN"
+                id="lN1"
                 ref="pass1"
               />
             </div>
@@ -161,7 +160,7 @@ class HomeNoLogin extends Component {
                 type="password"
                 name="repeat-password"
                 placeholder="Confirm Password"
-                id="lN"
+                id="lN2"
                 ref="pass2"
               />
             </div>
@@ -170,7 +169,7 @@ class HomeNoLogin extends Component {
                 type="text"
                 name="location"
                 placeholder="Location"
-                id="lN"
+                id="lN3"
                 ref="loc"
               />
             </div>
@@ -219,7 +218,7 @@ class HomeNoLogin extends Component {
                 type="email"
                 name="email"
                 placeholder="Email Address"
-                id="lN"
+                id="lN5"
                 ref="loginEmail"
               />
             </div>
@@ -228,7 +227,7 @@ class HomeNoLogin extends Component {
                 type="password"
                 name="password"
                 placeholder="Password"
-                id="lN"
+                id="lN4"
                 ref="loginPass"
               />
             </div>

@@ -12,12 +12,28 @@ router.post("/", (req, res) => {
   res.send("Profile Home Post..");
 });
 
+router.post("/getSent", (req, res) => {
+  const email = req.body.data.email;
+  var data = [];
+  var messages = [];
+
+  async function start() {
+    await Person.findOne({ email: email }).then(person => {
+      for (t = 0; t < person.messageModel.sentTo.length; t++) {
+        data[t] = person.messageModel.sentTo[t];
+      }
+      messages = person.messageModel.sentMessages;
+      return res.json({ people: data, sentMessages: messages });
+    });
+  }
+  start();
+});
+
 router.post("/getMessages", (req, res) => {
   const email = req.body.data.email;
   Person.findOne({ email: email })
     .then(person => {
-      // console.log(person.messages);
-      return res.json({ messages: person.messages });
+      return res.json({ messages: person.messageModel.messages });
     })
     .catch(err => console.log(err));
 });
@@ -42,7 +58,6 @@ router.post("/userProfile/:username", (req, res) => {
 });
 
 router.post("/sendMessage", (req, res) => {
-  // const message = req.body.message;
   const message = req.body.message;
   const email = req.body.data;
 
@@ -51,13 +66,14 @@ router.post("/sendMessage", (req, res) => {
       Person.findOne({ email: user.email })
         .then(per => {
           per.sentMessages.push(message);
-          per.save();
 
           Person.findOne({ email: email })
             .then(person => {
-              person.messages.push(message);
+              person.messageModel.messages.push(message);
+              per.messageModel.sentTo.push(person.name);
+              per.messageModel.sentMessages.push(message);
               person.save();
-              console.log("message sent!");
+              per.save();
             })
             .catch(err => console.log(err));
         })

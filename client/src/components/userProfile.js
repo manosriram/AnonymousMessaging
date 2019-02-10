@@ -1,4 +1,3 @@
-import Navbar from "./Navbar";
 import React, { Component } from "react";
 import Message from "./Message";
 const axios = require("axios");
@@ -9,7 +8,8 @@ class UserProfile extends Component {
     this.state = {
       payload: {},
       messageActive: 0,
-      profile: 1
+      profile: 1,
+      error: 0
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.logOut = this.logOut.bind(this);
@@ -59,6 +59,7 @@ class UserProfile extends Component {
                 </button>
               </li>
             </ul>
+            <br />
             <button onClick={this.logOut} class="ui inverted red button">
               Logout
             </button>

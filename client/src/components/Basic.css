@@ -4,7 +4,12 @@ html {
   margin: auto;
 }
 #fN,
-#lN {
+#lN,
+#lN1,
+#lN2,
+#lN3,
+#lN4,
+#lN5 {
   width: 50%;
 }
 
@@ -23,10 +28,15 @@ html {
 }
 
 #noMatch {
+  font-size: 20px;
+  margin: auto;
   color: red;
 }
 
 #match {
+  font-size: 20px;
+  /* width: 50px; */
+  margin: auto;
   color: green;
 }
 
@@ -63,7 +73,7 @@ html {
   text-align: left;
 }
 #one {
-  border: 6px solid #95a5a6;
+  border: 3px solid #95a5a6;
 }
 
 #homeIcon {
@@ -91,4 +101,21 @@ html {
 
 #spinner_1 {
   margin: auto;
+}
+
+#left {
+  background: #6a89cc;
+}
+#right {
+  background: #487eb0;
+}
+
+#left,
+#right {
+  text-align: center;
+  width: 50%;
+}
+
+#divide {
+  background: white;
 }

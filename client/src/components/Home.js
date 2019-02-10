@@ -17,13 +17,46 @@ class Home extends Component {
       search: 0,
       users: [],
       inbox: 0,
+      sent: 0,
       messages: [],
+      sentMessages: [],
+      sentTo: [],
       loading: 0
     };
     this.getProfile = this.getProfile.bind(this);
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
     this.getMessages = this.getMessages.bind(this);
+    this.openSent = this.openSent.bind(this);
+  }
+
+  openSent() {
+    this.setState({
+      sent: 1,
+      inbox: 0,
+      search: 0,
+      profile: 0,
+      home: 0,
+      loading: 1
+    });
+    axios
+      .post("/profile/getSent", {
+        data: this.state.payload,
+        people: this.state.sentTo
+      })
+      .then(res =>
+        this.setState(
+          {
+            sentTo: res.data.people,
+            sentMessages: res.data.sentMessages,
+            loading: 0
+          },
+          () => {
+            console.log(res);
+          }
+        )
+      )
+      .catch(err => console.log(err));
   }
 
   getMessages() {
@@ -115,10 +148,11 @@ class Home extends Component {
                     onClick={this.getProfile}
                     class="ui inverted blue button"
                   >
-                    Profile
+                    My Profile
                   </button>
                 </li>
               </ul>
+              <br />
               <button onClick={this.logOut} class="ui inverted red button">
                 Logout
               </button>
@@ -142,38 +176,41 @@ class Home extends Component {
 
           <div id="homeIn">
             <button
-              class="ui inverted grey button"
-              id="msgB"
               onClick={this.getMessages}
+              id="left"
+              class="ui left attached button"
             >
-              Open <strong> Inbox</strong>
+              Open Inbox
             </button>
-            <div className="jumbotron">
+            <button
+              onClick={this.openSent}
+              id="right"
+              class="right attached ui button"
+            >
+              Open Sent Messages
+            </button>
+          </div>
+          <div className="jumbotron">
+            <hr />
+            <h1>Welcome {this.state.payload.name} !</h1>
+            <br />
+            <div id="box1" class="ui raised very padded text container segment">
+              <h2>Available Users : </h2>
               <hr />
-              <h1>Welcome {this.state.payload.name} !</h1>
               <br />
-              <div
-                id="box1"
-                class="ui raised very padded text container segment"
-              >
-                <h2>Available Users : </h2>
-                <hr />
-                <br />
-                <br />
-                {this.state.users.map((person, ind) => {
-                  return (
-                    <div key={ind}>
-                      <a>
-                        <h2 key={ind}>{person.name}</h2>
-                      </a>
-                      <br />
-                    </div>
-                  );
-                })}
-              </div>
+              <br />
+              {this.state.users.map((person, ind) => {
+                return (
+                  <div key={ind}>
+                    <h2 key={ind}>{person.name}</h2>
+                    <br />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
+        // </div>
       );
     }
     if (this.state.profile === 1 && this.state.home === 0) {
@@ -213,10 +250,11 @@ class Home extends Component {
                     onClick={this.getProfile}
                     class="ui inverted blue button"
                   >
-                    Profile
+                    My Profile
                   </button>
                 </li>
               </ul>
+              <br />
               <button onClick={this.logOut} class="ui inverted red button">
                 Logout
               </button>
@@ -260,6 +298,90 @@ class Home extends Component {
                     {ind + 1} -<strong> {msg}</strong>
                   </h2>
                   <br />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+    if (this.state.sent === 1) {
+      return (
+        <div>
+          <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a id="homeIcon" href="/">
+              <i class="home icon" id="homeIcan" />
+            </a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon" />
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active" />
+                <li class="nav-item">
+                  <button
+                    onClick={this.getProfile}
+                    class="ui inverted blue button"
+                  >
+                    My Profile
+                  </button>
+                </li>
+              </ul>
+              <br />
+              <button onClick={this.logOut} class="ui inverted red button">
+                Logout
+              </button>
+              <form class="form-inline my-2 my-lg-0">
+                <input
+                  class="form-control mr-sm-2"
+                  type="search"
+                  placeholder="Search Users.."
+                  aria-label="Search"
+                  ref="user"
+                />
+              </form>
+              <button
+                onClick={this.searchUsers}
+                class="btn btn-outline-success my-2 my-sm-0"
+              >
+                Search
+              </button>
+            </div>
+          </nav>
+          <br />
+          <strong>
+            <strong>
+              <h2 id="Ymsg">Your Sent Messages. </h2>
+            </strong>
+          </strong>
+          <hr />
+          <br />
+          <br />
+          {this.state.loading === 1 && (
+            <Spinner
+              size={80}
+              spinnerColor={"white"}
+              spinnerWidth={1}
+              visible={this.state.loading}
+            />
+          )}
+          <div id="one">
+            {this.state.sentMessages.map((msg, ind) => {
+              return (
+                <div id="msgBox">
+                  <h2>Message : {msg}</h2>
+                  <br />
+                  <h2>To : {this.state.sentTo[ind]}</h2>
+                  <hr id="divide" />
                 </div>
               );
             })}

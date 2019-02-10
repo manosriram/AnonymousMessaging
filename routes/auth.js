@@ -15,30 +15,48 @@ router.post("/", (req, res) => {
 
 router.post("/userRegister", (req, res) => {
   const email = req.body.payload.email;
-  Person.findOne({ email })
+  const name = req.body.payload.name;
+  Person.findOne({ name: name })
     .then(person => {
-      if (person) {
-        return res.json({ alreadyRegistered: 1, registered: 0 });
+      if (!person) {
+        Person.findOne({ email: email })
+          .then(person => {
+            if (person) {
+              return res.json({ alreadyRegistered: 1, registered: 0 });
+            } else {
+              const name = req.body.payload.name;
+              var password = req.body.payload.password;
+              const location = req.body.payload.location;
+              const newPerson = new Person({
+                name: name,
+                email: email,
+                password: password,
+                location: location
+              });
+              bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newPerson.password, salt, (err, hash) => {
+                  newPerson.password = hash;
+                  newPerson
+                    .save()
+                    .then(
+                      res.json({
+                        registered: 1,
+                        alreadyRegistered: 0,
+                        loading: 0
+                      })
+                    )
+                    .catch(err => console.log(err));
+                });
+              });
+            }
+          })
+          .catch(err => console.log(err));
       } else {
-        const name = req.body.payload.name;
-        var password = req.body.payload.password;
-        const location = req.body.payload.location;
-        const newPerson = new Person({
-          name: name,
-          email: email,
-          password: password,
-          location: location
-        });
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newPerson.password, salt, (err, hash) => {
-            newPerson.password = hash;
-            newPerson
-              .save()
-              .then(
-                res.json({ registered: 1, alreadyRegistered: 0, loading: 0 })
-              )
-              .catch(err => console.log(err));
-          });
+        return res.json({
+          error: 2,
+          registered: 0,
+          alreadyRegistered: 0,
+          loading: 0
         });
       }
     })
@@ -46,56 +64,58 @@ router.post("/userRegister", (req, res) => {
 });
 
 router.post("/userLogin", (req, res) => {
-  if (!req.cookies.auth_t) {
-    const email = req.body.payload.email;
-    const password = req.body.payload.password;
-    Person.findOne({ email: email })
-      .then(person => {
-        if (!person) {
-          return res.json({
-            alreadyLogged: 0,
-            loggedIn: 0,
-            passwordIncorrect: 0,
-            notFound: 1
-          });
-        }
-        bcrypt
-          .compare(password, person.password)
-          .then(isCorrect => {
-            if (isCorrect) {
-              var payload = {
-                id: person.id,
-                name: person.name,
-                email: person.email
-              };
-              jsonwt.sign(
-                payload,
-                key,
-                { expiresIn: 9000000 },
-                (err, token) => {
-                  res.cookie("auth_t", token, { maxAge: 90000000 });
-                  return res.json({
-                    alreadyLogged: 0,
-                    loggedIn: 1,
-                    passwordIncorrect: 0,
-                    notFound: 0,
-                    payload: person
-                  });
-                }
-              );
-            } else {
-              return res.json({
-                alreadyLogged: 0,
-                loggedIn: 0,
-                passwordIncorrect: 1,
-                notFound: 0,
-                payload: person
-              });
-            }
-          })
-          .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
+  if (req.body.payload.email !== undefined) {
+    if (!req.cookies.auth_t) {
+      const email = req.body.payload.email;
+      const password = req.body.payload.password;
+      Person.findOne({ email: email })
+        .then(person => {
+          if (!person) {
+            return res.json({
+              alreadyLogged: 0,
+              loggedIn: 0,
+              passwordIncorrect: 0,
+              notFound: 1
+            });
+          }
+          bcrypt
+            .compare(password, person.password)
+            .then(isCorrect => {
+              if (isCorrect) {
+                var payload = {
+                  id: person.id,
+                  name: person.name,
+                  email: person.email
+                };
+                jsonwt.sign(
+                  payload,
+                  key,
+                  { expiresIn: 9000000 },
+                  (err, token) => {
+                    res.cookie("auth_t", token, { maxAge: 90000000 });
+                    return res.json({
+                      alreadyLogged: 0,
+                      loggedIn: 1,
+                      passwordIncorrect: 0,
+                      notFound: 0,
+                      payload: person
+                    });
+                  }
+                );
+              } else {
+                return res.json({
+                  alreadyLogged: 0,
+                  loggedIn: 0,
+                  passwordIncorrect: 1,
+                  notFound: 0,
+                  payload: person
+                });
+              }
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+    }
   } else {
     // });
     jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
