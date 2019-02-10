@@ -1,3 +1,4 @@
+const Cookie = require("js-cookie");
 import React, { Component } from "react";
 import Message from "./Message";
 const axios = require("axios");
@@ -24,8 +25,8 @@ class UserProfile extends Component {
   }
 
   logOut() {
-    axios.get("/auth/userLogout");
-    window.location = "/";
+    Cookie.remove("auth_t");
+    this.props.history.push("/");
   }
 
   render() {
