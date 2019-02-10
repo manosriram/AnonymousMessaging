@@ -5,14 +5,6 @@ const bcrypt = require("bcryptjs");
 const jsonwt = require("jsonwebtoken");
 const key = require("../setup/url").secret;
 
-router.get("/", (req, res) => {
-  res.send("Auth Page!!");
-});
-
-router.post("/", (req, res) => {
-  res.send("Post Route1!");
-});
-
 router.post("/userRegister", (req, res) => {
   const email = req.body.payload.email;
   const name = req.body.payload.name;

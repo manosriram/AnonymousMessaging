@@ -32,10 +32,6 @@ mongoose
   .then(() => console.log("MongoDB Connected Succesfully!"))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => {
-  res.send("Hey there from Home!");
-});
-
 const port = process.env.PORT || 5000;
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

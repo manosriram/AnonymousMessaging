@@ -4,14 +4,6 @@ const Person = require("../Models/Person");
 const jsonwt = require("jsonwebtoken");
 const key = require("../setup/url").secret;
 
-router.get("/", (req, res) => {
-  res.send("Profile Home Get!");
-});
-
-router.post("/", (req, res) => {
-  res.send("Profile Home Post..");
-});
-
 router.post("/getSent", (req, res) => {
   const email = req.body.data.email;
   var data = [];
