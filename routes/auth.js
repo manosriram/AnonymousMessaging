@@ -5,6 +5,17 @@ const bcrypt = require("bcryptjs");
 const jsonwt = require("jsonwebtoken");
 const key = require("../setup/url").secret;
 
+router.post("/getStatus", (req, res) => {
+  if (!req.cookies.auth_t) {
+    return res.json({ alreadyLogged: 0 });
+  } else {
+    jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+      const name = user.name;
+      return res.json({ alreadyLogged: 1 });
+    });
+  }
+});
+
 router.post("/userRegister", (req, res) => {
   const email = req.body.payload.email;
   const name = req.body.payload.name;
@@ -56,60 +67,57 @@ router.post("/userRegister", (req, res) => {
 });
 
 router.post("/userLogin", (req, res) => {
-  if (req.body.payload.email !== undefined) {
-    if (!req.cookies.auth_t) {
-      const email = req.body.payload.email;
-      const password = req.body.payload.password;
-      Person.findOne({ email: email })
-        .then(person => {
-          if (!person) {
-            return res.json({
-              alreadyLogged: 0,
-              loggedIn: 0,
-              passwordIncorrect: 0,
-              notFound: 1
-            });
-          }
-          bcrypt
-            .compare(password, person.password)
-            .then(isCorrect => {
-              if (isCorrect) {
-                var payload = {
-                  id: person.id,
-                  name: person.name,
-                  email: person.email
-                };
-                jsonwt.sign(
-                  payload,
-                  key,
-                  { expiresIn: 9000000 },
-                  (err, token) => {
-                    res.cookie("auth_t", token, { maxAge: 90000000 });
-                    return res.json({
-                      alreadyLogged: 0,
-                      loggedIn: 1,
-                      passwordIncorrect: 0,
-                      notFound: 0,
-                      payload: person
-                    });
-                  }
-                );
-              } else {
-                return res.json({
-                  alreadyLogged: 0,
-                  loggedIn: 0,
-                  passwordIncorrect: 1,
-                  notFound: 0,
-                  payload: person
-                });
-              }
-            })
-            .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err));
-    }
+  if (!req.cookies.auth_t) {
+    const email = req.body.payload.email;
+    const password = req.body.payload.password;
+    Person.findOne({ email: email })
+      .then(person => {
+        if (!person) {
+          return res.json({
+            alreadyLogged: 0,
+            loggedIn: 0,
+            passwordIncorrect: 0,
+            notFound: 1
+          });
+        }
+        bcrypt
+          .compare(password, person.password)
+          .then(isCorrect => {
+            if (isCorrect) {
+              var payload = {
+                id: person.id,
+                name: person.name,
+                email: person.email
+              };
+              jsonwt.sign(
+                payload,
+                key,
+                { expiresIn: 9000000 },
+                (err, token) => {
+                  res.cookie("auth_t", token, { maxAge: 90000000 });
+                  return res.json({
+                    alreadyLogged: 0,
+                    loggedIn: 1,
+                    passwordIncorrect: 0,
+                    notFound: 0,
+                    payload: person
+                  });
+                }
+              );
+            } else {
+              return res.json({
+                alreadyLogged: 0,
+                loggedIn: 0,
+                passwordIncorrect: 1,
+                notFound: 0,
+                payload: person
+              });
+            }
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   } else {
-    // });
     jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
       if (user) {
         return res.json({
@@ -129,7 +137,7 @@ router.get("/userLogout", (req, res) => {
     if (user) {
       res.clearCookie("auth_t");
       res.clearCookie("email");
-      req.logout();
+      req.logOut();
       return;
     } else {
       return res.json({ error: 1 });

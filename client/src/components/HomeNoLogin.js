@@ -26,11 +26,10 @@ class HomeNoLogin extends Component {
   componentDidMount() {
     this.setState({ error: 0 });
     axios
-      .post("/auth/userLogin", {})
+      .post("/auth/getStatus")
       .then(res =>
         this.setState({
-          alreadyLogged: res.data.alreadyLogged,
-          name: res.data.payload.name
+          alreadyLogged: res.data.alreadyLogged
         })
       )
       .catch();

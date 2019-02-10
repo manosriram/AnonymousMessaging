@@ -45,16 +45,11 @@ class Home extends Component {
         people: this.state.sentTo
       })
       .then(res =>
-        this.setState(
-          {
-            sentTo: res.data.people,
-            sentMessages: res.data.sentMessages,
-            loading: 0
-          },
-          () => {
-            console.log(res);
-          }
-        )
+        this.setState({
+          sentTo: res.data.people,
+          sentMessages: res.data.sentMessages,
+          loading: 0
+        })
       )
       .catch(err => console.log(err));
   }
@@ -69,11 +64,7 @@ class Home extends Component {
     });
     axios
       .post("/profile/getMessages", { data: this.state.payload })
-      .then(res =>
-        this.setState({ messages: res.data.messages, loading: 0 }, () => {
-          console.log(this.state);
-        })
-      )
+      .then(res => this.setState({ messages: res.data.messages, loading: 0 }))
       .catch(err => console.log(err));
   }
 
@@ -104,13 +95,10 @@ class Home extends Component {
     axios
       .post("/auth/userLogin")
       .then(res =>
-        this.setState(
-          {
-            alreadyLogged: res.data.alreadyLogged,
-            payload: res.data.payload
-          },
-          () => console.log(this.state)
-        )
+        this.setState({
+          alreadyLogged: res.data.alreadyLogged,
+          payload: res.data.payload
+        })
       )
       .catch();
   }
@@ -126,10 +114,10 @@ class Home extends Component {
         <div>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a id="homeIcon" href="/">
-              <i class="home icon" id="homeIcan" />
+              <i className="home icon" id="homeIcan" />
             </a>
             <button
-              class="navbar-toggler"
+              className="navbar-toggler"
               type="button"
               data-toggle="collapse"
               data-target="#navbarSupportedContent"
@@ -137,28 +125,31 @@ class Home extends Component {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span class="navbar-toggler-icon" />
+              <span className="navbar-toggler-icon" />
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active" />
-                <li class="nav-item">
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item active" />
+                <li className="nav-item">
                   <button
                     onClick={this.getProfile}
-                    class="ui inverted blue button"
+                    className="ui inverted blue button"
                   >
                     My Profile
                   </button>
                 </li>
               </ul>
               <br />
-              <button onClick={this.logOut} class="ui inverted red button">
+              <button onClick={this.logOut} className="ui inverted red button">
                 Logout
               </button>
-              <form class="form-inline my-2 my-lg-0">
+              <form className="form-inline my-2 my-lg-0">
                 <input
-                  class="form-control mr-sm-2"
+                  className="form-control mr-sm-2"
                   type="search"
                   placeholder="Search Users.."
                   aria-label="Search"
@@ -167,7 +158,7 @@ class Home extends Component {
               </form>
               <button
                 onClick={this.searchUsers}
-                class="btn btn-outline-success my-2 my-sm-0"
+                className="btn btn-outline-success my-2 my-sm-0"
               >
                 Search
               </button>
@@ -178,14 +169,14 @@ class Home extends Component {
             <button
               onClick={this.getMessages}
               id="left"
-              class="ui left attached button"
+              className="ui left attached button"
             >
               Open Inbox
             </button>
             <button
               onClick={this.openSent}
               id="right"
-              class="right attached ui button"
+              className="right attached ui button"
             >
               Open Sent Messages
             </button>
@@ -194,7 +185,10 @@ class Home extends Component {
             <hr />
             <h1>Welcome {this.state.payload.name} !</h1>
             <br />
-            <div id="box1" class="ui raised very padded text container segment">
+            <div
+              id="box1"
+              className="ui raised very padded text container segment"
+            >
               <h2>Available Users : </h2>
               <hr />
               <br />
@@ -228,10 +222,10 @@ class Home extends Component {
         <div>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a id="homeIcon" href="/">
-              <i class="home icon" id="homeIcan" />
+              <i className="home icon" id="homeIcan" />
             </a>
             <button
-              class="navbar-toggler"
+              className="navbar-toggler"
               type="button"
               data-toggle="collapse"
               data-target="#navbarSupportedContent"
@@ -239,28 +233,31 @@ class Home extends Component {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span class="navbar-toggler-icon" />
+              <span className="navbar-toggler-icon" />
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active" />
-                <li class="nav-item">
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item active" />
+                <li className="nav-item">
                   <button
                     onClick={this.getProfile}
-                    class="ui inverted blue button"
+                    className="ui inverted blue button"
                   >
                     My Profile
                   </button>
                 </li>
               </ul>
               <br />
-              <button onClick={this.logOut} class="ui inverted red button">
+              <button onClick={this.logOut} className="ui inverted red button">
                 Logout
               </button>
-              <form class="form-inline my-2 my-lg-0">
+              <form className="form-inline my-2 my-lg-0">
                 <input
-                  class="form-control mr-sm-2"
+                  className="form-control mr-sm-2"
                   type="search"
                   placeholder="Search Users.."
                   aria-label="Search"
@@ -269,7 +266,7 @@ class Home extends Component {
               </form>
               <button
                 onClick={this.searchUsers}
-                class="btn btn-outline-success my-2 my-sm-0"
+                className="btn btn-outline-success my-2 my-sm-0"
               >
                 Search
               </button>
@@ -310,10 +307,10 @@ class Home extends Component {
         <div>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a id="homeIcon" href="/">
-              <i class="home icon" id="homeIcan" />
+              <i className="home icon" id="homeIcan" />
             </a>
             <button
-              class="navbar-toggler"
+              className="navbar-toggler"
               type="button"
               data-toggle="collapse"
               data-target="#navbarSupportedContent"
@@ -321,28 +318,31 @@ class Home extends Component {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span class="navbar-toggler-icon" />
+              <span className="navbar-toggler-icon" />
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active" />
-                <li class="nav-item">
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item active" />
+                <li className="nav-item">
                   <button
                     onClick={this.getProfile}
-                    class="ui inverted blue button"
+                    className="ui inverted blue button"
                   >
                     My Profile
                   </button>
                 </li>
               </ul>
               <br />
-              <button onClick={this.logOut} class="ui inverted red button">
+              <button onClick={this.logOut} className="ui inverted red button">
                 Logout
               </button>
-              <form class="form-inline my-2 my-lg-0">
+              <form className="form-inline my-2 my-lg-0">
                 <input
-                  class="form-control mr-sm-2"
+                  className="form-control mr-sm-2"
                   type="search"
                   placeholder="Search Users.."
                   aria-label="Search"
@@ -351,7 +351,7 @@ class Home extends Component {
               </form>
               <button
                 onClick={this.searchUsers}
-                class="btn btn-outline-success my-2 my-sm-0"
+                className="btn btn-outline-success my-2 my-sm-0"
               >
                 Search
               </button>

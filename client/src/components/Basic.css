@@ -114,6 +114,7 @@ html {
 #right {
   text-align: center;
   width: 50%;
+  /* height: auto; */
 }
 
 #divide {
