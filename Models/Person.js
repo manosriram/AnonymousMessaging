@@ -30,17 +30,7 @@ const PersonSchema = new Schema({
     sentTo: [{ type: String }],
     messages: [{ type: String }],
     sentMessages: [{ type: String }]
-  },
-  sentMessages: [
-    {
-      type: String
-    }
-  ]
-  // sentTo: [
-  //   {
-  //     type: String
-  //   }
-  // ]
+  }
 });
 
 module.exports = Person = mongoose.model("myPerson", PersonSchema);
