@@ -60,9 +60,9 @@ class HomeNoLogin extends Component {
     if (
       this.refs.name.value.length === 0 ||
       this.refs.email.value.length === 0 ||
-      this.refs.pass1.value.length === 0 ||
-      this.refs.pass2.value.length === 0 ||
-      this.refs.loc.value.length === 0
+      this.refs.pass1.value.length < 5 ||
+      this.refs.pass2.value.length < 5 ||
+      this.refs.loc.value.length < 2
     ) {
       this.setState({ error: 1 });
       return;

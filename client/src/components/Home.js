@@ -3,8 +3,8 @@ import Profile from "./Profile";
 import "./Basic.css";
 import React, { Component } from "react";
 import UserProfile from "./userProfile";
-const axios = require("axios");
 const Cookie = require("js-cookie");
+const axios = require("axios");
 
 class Home extends Component {
   constructor() {
