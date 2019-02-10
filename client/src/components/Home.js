@@ -1,4 +1,5 @@
 import Spinner from "react-spinner-material";
+import Chat from "./Chat";
 import Profile from "./Profile";
 import "./Basic.css";
 import React, { Component } from "react";

@@ -4,6 +4,12 @@ const Person = require("../Models/Person");
 const jsonwt = require("jsonwebtoken");
 const key = require("../setup/url").secret;
 
+router.post("/getStatus", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    res.json({ name: user.name });
+  });
+});
+
 router.post("/getSent", (req, res) => {
   const email = req.body.data.email;
   var data = [];

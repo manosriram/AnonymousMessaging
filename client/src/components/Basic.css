@@ -120,3 +120,19 @@ html {
 #divide {
   background: white;
 }
+
+#chat {
+  color: white;
+  border: 3px solid black;
+}
+#message {
+  width: 40%;
+  height: 50px;
+  border-radius: 30px;
+  font-size: 20px;
+  outline: none;
+}
+
+#message::placeholder {
+  text-align: center;
+}

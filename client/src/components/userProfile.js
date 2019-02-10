@@ -1,7 +1,8 @@
-const Cookie = require("js-cookie");
+import Chat from "./Chat";
 import React, { Component } from "react";
 import Message from "./Message";
 const axios = require("axios");
+const Cookie = require("js-cookie");
 
 class UserProfile extends Component {
   constructor() {
@@ -10,14 +11,26 @@ class UserProfile extends Component {
       payload: {},
       messageActive: 0,
       profile: 1,
-      error: 0
+      error: 0,
+      chat: 0,
+      name: ""
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.startChat = this.startChat.bind(this);
+  }
+
+  startChat() {
+    this.setState({ chat: 1, profile: 0 });
   }
 
   componentDidMount() {
-    this.setState({ payload: this.props.data });
+    axios
+      .post("/profile/getStatus")
+      .then(res =>
+        this.setState({ name: res.data.name, payload: this.props.data })
+      )
+      .catch(err => console.log(err));
   }
 
   sendMessage() {
@@ -92,11 +105,16 @@ class UserProfile extends Component {
             <button onClick={this.sendMessage} class="ui teal button">
               Message {this.props.data.name}
             </button>
+            <button onClick={this.startChat} class="ui teal button">
+              Chat
+            </button>
           </div>
         )}
         {this.state.messageActive === 1 && (
           <Message data={this.state.payload} />
         )}
+
+        {this.state.chat === 1 && <Chat name={this.state.name} />}
       </div>
     );
   }

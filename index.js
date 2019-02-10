@@ -1,3 +1,4 @@
+const socket = require("socket.io");
 const bodyparser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -8,9 +9,15 @@ const key = require("./setup/url").secret;
 const cookieparser = require("cookie-parser");
 const session = require("express-session");
 const profile = require("./routes/profile");
+connection = [];
+users = [];
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
+
+app.get("/", (req, res) => {
+  res.send("hey home!").status(200);
+});
 
 app.use(
   session({
@@ -43,8 +50,32 @@ if (process.env.NODE_ENV === "production") {
 
 app.use("/auth", auth);
 app.use("/profile", profile);
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server at ${port}`);
 });
 
+// Socket Init..
+const io = socket(server);
+io.on("connection", socket => {
+  console.log("Made Socket Connection!");
+  connection.push(socket.id);
+  console.log(connection);
+  console.log(users);
+  var latestUser = users[users.length - 1];
+
+  socket.on("chat", data => {
+    io.sockets.emit("chat", data);
+  });
+
+  // socket.on("typing", data => {
+  //   socket.broadcast.emit("typing", data);
+  // });
+
+  socket.on("disconnect", function() {
+    let index = connection.indexOf(socket.id);
+    connection.splice(index, 1);
+    users.splice(index, 1);
+    io.emit("user disconnected");
+  });
+});
 module.exports = app;
