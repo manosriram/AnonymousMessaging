@@ -15,10 +15,6 @@ users = [];
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.send("hey home!").status(200);
-});
-
 app.use(
   session({
     secret: key,
@@ -57,25 +53,16 @@ const server = app.listen(port, () => {
 // Socket Init..
 const io = socket(server);
 io.on("connection", socket => {
-  console.log("Made Socket Connection!");
   connection.push(socket.id);
-  console.log(connection);
-  console.log(users);
-  var latestUser = users[users.length - 1];
 
   socket.on("chat", data => {
     io.sockets.emit("chat", data);
   });
 
-  // socket.on("typing", data => {
-  //   socket.broadcast.emit("typing", data);
-  // });
-
   socket.on("disconnect", function() {
     let index = connection.indexOf(socket.id);
     connection.splice(index, 1);
     users.splice(index, 1);
-    io.emit("user disconnected");
   });
 });
 module.exports = app;
