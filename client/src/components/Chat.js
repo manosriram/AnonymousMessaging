@@ -1,7 +1,7 @@
 import "./Basic.css";
 import React, { Component } from "react";
 import io from "socket.io-client";
-let socket = io(`http://localhost:5000`);
+let socket = io(`https://anomes.herokuapp.com/`);
 
 class Chat extends Component {
   constructor() {
@@ -28,6 +28,7 @@ class Chat extends Component {
       output.innerHTML += `<h3><strong><u>${
         this.state.data.handle
       }</u> </strong> : ${this.state.data.message}</h3>`;
+      message.value = "";
     });
   }
 
