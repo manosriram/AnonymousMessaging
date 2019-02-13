@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import "./Basic.css";
+const Cookie = require("js-cookie");
 
 class Profile extends Component {
-  componentDidMount() {
-    console.log(this.props);
+  constructor() {
+    super();
+    this.logOut = this.logOut.bind(this);
   }
 
+  logOut() {
+    Cookie.remove("auth_t");
+    window.location = "/";
+  }
   render() {
     return (
       <div>
