@@ -39,7 +39,7 @@ class UserProfile extends Component {
 
   logOut() {
     Cookie.remove("auth_t");
-    this.props.history.push("/");
+    window.location = "/";
   }
 
   render() {
