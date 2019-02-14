@@ -3,6 +3,20 @@ const router = express();
 const Person = require("../Models/Person");
 const jsonwt = require("jsonwebtoken");
 const key = require("../setup/url").secret;
+const fetch = require("node-fetch");
+
+router.get("/getAUser", (req, res) => {
+  var getUser = () => {
+    return Person.find({ name: "Mano Sriram" });
+  };
+
+  callUser = async () => {
+    const res = await getUser();
+    return res;
+  };
+
+  console.log(callUser().then(res => console.log(res)));
+});
 
 router.post("/getStatus", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
@@ -15,7 +29,7 @@ router.post("/getSent", (req, res) => {
   var data = [];
   var messages = [];
 
-  async function start() {
+  start = async () => {
     await Person.findOne({ email: email }).then(person => {
       for (t = 0; t < person.messageModel.sentTo.length; t++) {
         data[t] = person.messageModel.sentTo[t];
@@ -23,7 +37,7 @@ router.post("/getSent", (req, res) => {
       messages = person.messageModel.sentMessages;
       return res.json({ people: data, sentMessages: messages });
     });
-  }
+  };
   start();
 });
 

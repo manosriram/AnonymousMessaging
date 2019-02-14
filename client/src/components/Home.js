@@ -206,7 +206,6 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        // </div>
       );
     }
     if (this.state.profile === 1 && this.state.home === 0) {
